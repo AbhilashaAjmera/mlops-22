@@ -81,7 +81,7 @@ X_test, X_dev, y_train,  y_dev = train_test_split(
 for cur_h_params in h_param_comb:
     clf = svm.SVC()
     hyper_params = cur_h_params
-    clf.set_params(hyper_params)
+    clf.set_params(""hyper_params)
 
 # Learn the digits on the train subset
 clf.fit(X_train, y_train)
