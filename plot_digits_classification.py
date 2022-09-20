@@ -32,10 +32,10 @@ from sklearn.model_selection import train_test_split
 # Note: if we were working from image files (e.g., 'png' files), we would load
 # them using :func:`matplotlib.pyplot.imread`.
 GAMMA = 0.075
-c=0.5
-train_frac = 0.8
-test_frac = 0.1
-dev_frac = 0.1
+c = 0.75
+train_frac= 0.8
+test_frac =0.1
+dev_frac =0.1
 digits = datasets.load_digits()
 
 _, axes = plt.subplots(nrows=1, ncols=4, figsize=(10, 3))
@@ -64,11 +64,19 @@ n_samples = len(digits.images)
 data = digits.images.reshape((n_samples, -1))
 
 # Create a classifier: a support vector classifier
-clf = svm.SVC(gamma=0.075)
+clf = svm.SVC()
+
+#setting hyper_params
+hyper_params = { 'gamma':GAMMA}
+clf.set_params(hyper_params)
 
 # Split data into 50% train and 50% test subsets
-X_train, X_test, y_train, y_test = train_test_split(
-    data, digits.target, test_size=0.5, shuffle=False
+X_train, X_dev_test, y_train, y_dev_test = train_test_split(
+    data, digits.target, test_size=1-train_frac, shuffle=True
+)
+
+X_test, X_dev, y_train, y_test, y_dev = train_test_split(
+    X_dev_test,y_dev_test, test_size=(test_frac)/(test_frac + dev_frac), shuffle=True
 )
 
 # Learn the digits on the train subset
