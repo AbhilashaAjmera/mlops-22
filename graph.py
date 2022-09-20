@@ -31,8 +31,14 @@ from sklearn.model_selection import train_test_split
 #
 # Note: if we were working from image files (e.g., 'png' files), we would load
 # them using :func:`matplotlib.pyplot.imread`.
-GAMMA = 0.075
-c = 0.75
+gamma_list = [ 0.01, 0.005, 0.001, 0.0005, 0.0001]
+c_list =[0.1, 0.2, 0.5, 0.7, 1, 2, 5, 7, 10]
+h_param_comb= [{'gamma':g , 'C' :c} for g in gamma_list for c in c_list]
+assert len(h_param_comb) == len (gamma_list)* len (c_list)
+
+
+#set the ranges of hyperparams and train for every combination
+
 train_frac= 0.8
 test_frac =0.1
 dev_frac =0.1
@@ -63,13 +69,6 @@ for ax, image, label in zip(axes, digits.images, digits.target):
 n_samples = len(digits.images)
 data = digits.images.reshape((n_samples, -1))
 
-# Create a classifier: a support vector classifier
-clf = svm.SVC()
-
-#setting hyper_params
-hyper_params = { 'gamma':GAMMA}
-clf.set_params(hyper_params)
-
 # Split data into 50% train and 50% test subsets
 dev_test_frac = 1- train_frac
 X_train, X_dev_test, y_train, y_dev_test = train_test_split(
@@ -79,11 +78,16 @@ X_train, X_dev_test, y_train, y_dev_test = train_test_split(
 X_test, X_dev, y_train, y_test, y_dev = train_test_split(
     X_dev_test,y_dev_test, test_size=(dev_frac)/(dev_test_frac), shuffle=True
 )
+for cur_h_params in h_param_comb:
+    clf = svm,SVC()
+    hyper_params = cur_h_params
+    clf.set_params(""hyper_params)
 
 # Learn the digits on the train subset
 clf.fit(X_train, y_train)
-
+print(cur_h_params)
 # Predict the value of the digit on the test subset
+preducted_dev =clf.predict(X_dev)
 predicted = clf.predict(X_test)
 
 ###############################################################################
