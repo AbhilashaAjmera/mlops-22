@@ -78,17 +78,29 @@ X_train, X_dev_test, y_train, y_dev_test = train_test_split(
 X_test, X_dev, y_train,  y_dev = train_test_split(
     X_dev_test,y_dev_test, test_size=(dev_frac)/(dev_test_frac), shuffle=True
 )
+best_acc=-1.0
+best_model=None
+best_h_params = None
 for cur_h_params in h_param_comb:
     clf = svm.SVC()
     hyper_params = cur_h_params
-    clf.set_params(""hyper_params)
+    clf.set_params(**hyper_params)
 
 # Learn the digits on the train subset
 clf.fit(X_train, y_train)
 print(cur_h_params)
 # Predict the value of the digit on the test subset
-preducted_dev =clf.predict(X_dev)
-predicted = clf.predict(X_test)
+predicted_dev =clf.predict(X_dev)
+
+cur_acc = metrics.accuracy_score(y_pred=predicted_dev , y_true = y_dev)
+if cur_acc > best_acc:
+    best_acc = cur_acc
+    best_model = clf
+    best_h_params = cur_h_params
+    print("found best acc with:"+str(cur_h_params))
+    print("new best val accuracy:"+str(cur_acc))
+
+predicted = best_model.predict(X_test)
 
 ###############################################################################
 # Below we visualize the first 4 test samples and show their predicted
@@ -109,13 +121,5 @@ print(
     f"Classification report for classifier {clf}:\n"
     f"{metrics.classification_report(y_test, predicted)}\n"
 )
-
-###############################################################################
-# We can also plot a :ref:`confusion matrix <confusion_matrix>` of the
-# true digit values and the predicted digit values.
-
-disp = metrics.ConfusionMatrixDisplay.from_predictions(y_test, predicted)
-disp.figure_.suptitle("Confusion Matrix")
-print(f"Confusion matrix:\n{disp.confusion_matrix}")
-
-plt.show()
+print ("best hyperparams:")
+print(cur_h_params)
