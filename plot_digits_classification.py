@@ -32,6 +32,7 @@ from sklearn.model_selection import train_test_split
 # Note: if we were working from image files (e.g., 'png' files), we would load
 # them using :func:`matplotlib.pyplot.imread`.
 GAMMA = 0.001
+c=0.5
 train_frac = 0.8
 test_frac = 0.1
 dev_frac = 0.1
