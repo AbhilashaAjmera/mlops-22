@@ -31,7 +31,10 @@ from sklearn.model_selection import train_test_split
 #
 # Note: if we were working from image files (e.g., 'png' files), we would load
 # them using :func:`matplotlib.pyplot.imread`.
-
+GAMMA = 0.001
+train_frac = 0.8
+test_frac = 0.1
+dev_frac = 0.1
 digits = datasets.load_digits()
 
 _, axes = plt.subplots(nrows=1, ncols=4, figsize=(10, 3))
