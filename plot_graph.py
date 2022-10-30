@@ -36,7 +36,7 @@ data, label = preprocess_digits(digits)
 
 del digits
 metric = metrics.accuracy_score
- n_cv = 5
+n_cv = 5
 results = {}
 
 for n in range(n_cv):    
