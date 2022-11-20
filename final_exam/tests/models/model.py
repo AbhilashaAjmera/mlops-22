@@ -63,7 +63,3 @@ for n in range(n_cv):
         )
 
 print(results)
-
-new_df,mean_val,std_val = comparision_table(results,n_cv)
-print("The comparision table with mean and standard deviation is:")
-print(new_df.to_string(index=False))
